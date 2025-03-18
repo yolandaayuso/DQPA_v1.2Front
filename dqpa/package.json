@@ -6,6 +6,7 @@
     "@cyriacbr/react-split-text": "^1.0.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "@heroicons/react": "^1.0.6",
     "@heroui/react": "^2.7.4",
     "@heroui/theme": "^2.4.11",
@@ -50,9 +51,11 @@
     "recharts": "^2.15.1",
     "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.15",
+    "sweetalert2": "^11.17.2",
     "tailwind-merge": "^3.0.2",
     "three": "^0.172.0",
     "tsparticles": "^3.7.1",
+    "vanilla-tilt": "^1.8.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
