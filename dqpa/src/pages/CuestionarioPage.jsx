@@ -47,6 +47,7 @@ const CuestionarioPage = () => {
   const [ayudaSeleccionada, setAyudaSeleccionada] = useState('');
   const [dialogoInstruccionesAbierto, setDialogoInstruccionesAbierto] = useState(true);
   const [isLoadingFinalizar, setIsLoadingFinalizar] = useState(false);
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
 
   useEffect(() => {
     const fetchCuestionario = async () => {
@@ -55,10 +56,8 @@ const CuestionarioPage = () => {
         const config = { headers: { Authorization: `Bearer ${token}` } };
         console.log("este es el cuestionario Id")
         console.log(cuestionarioId)
-        const response = await axios.get(
-          `http://localhost:9092/api/autoevaluaciones/obtenerOptimizado/${autoevaluacionId}`,
-          config
-        );
+        const response = await axios.get(`${API_BASE_URL}/api/autoevaluaciones/obtenerOptimizado/${autoevaluacionId}`, config);
+
         console.log(response.data);
         const cuestionarioData = response.data.cuestionario;
   
@@ -165,11 +164,8 @@ const CuestionarioPage = () => {
   
       // Llamar al backend para actualizar el cuestionario
       const payload = { preguntaId, respuesta: respuestaId }; // Cambiado a 'respuesta'
-      const response = await axios.put(
-        `http://localhost:9092/api/autoevaluaciones/actualizar/${cuestionario._id}`,
-        payload,
-        config
-      );
+      await axios.put(`${API_BASE_URL}/api/autoevaluaciones/actualizar/${cuestionario._id}`, payload, config);
+
   
       // Actualizar el progreso y las respuestas del cuestionario localmente
       setProgreso(response.data.cuestionario.progreso);
@@ -221,11 +217,8 @@ const CuestionarioPage = () => {
               })) || [],
             };
   
-            await axios.post(
-              `http://localhost:9092/api/autoevaluaciones/guardarProgreso/${cuestionario._id}`,
-              payload,
-              config
-            );
+            await axios.post(`${API_BASE_URL}/api/autoevaluaciones/guardarProgreso/${cuestionario._id}`, payload, config);
+
   
             navigate('/autoevaluaciones');
           } catch (error) {
@@ -260,11 +253,8 @@ const CuestionarioPage = () => {
             })) || [],
           };
   
-          await axios.post(
-            `http://localhost:9092/api/autoevaluaciones/finalizarCuestionario/${cuestionario._id}`,
-            payload,
-            config
-          );
+          await axios.post(`${API_BASE_URL}/api/autoevaluaciones/finalizarCuestionario/${cuestionario._id}`, payload, config);
+
   
           navigate('/autoevaluaciones');
         } catch (error) {

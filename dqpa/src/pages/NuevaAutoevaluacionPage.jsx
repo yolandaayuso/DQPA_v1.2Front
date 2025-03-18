@@ -17,11 +17,12 @@ const NuevaAutoevaluacion = () => {
   const [numAutoevaluaciones, setNumAutoevaluaciones] = useState(0);
   const maxAutoevaluaciones = userRole === "ROLE_FREEMIUM" ? 1 : userRole === "ROLE_PREMIUM" ? 2 : Infinity;
   const disableButtons = numAutoevaluaciones >= maxAutoevaluaciones;
-  
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
+
   useEffect(() => {
     const fetchProcesos = async (id) => {
       try {
-        const response = await axios.get(`http://localhost:9092/api/procesos/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/procesos/${id}`);
         setProcesos(response.data);
       } catch (error) {
         console.error("Error al obtener los procesos:", error.response?.data || error.message);
@@ -32,9 +33,10 @@ const NuevaAutoevaluacion = () => {
       console.log(userId)
       try {
         const response = await axios.get(
-          `http://localhost:9092/api/autoevaluaciones/resumen/${userId}`,
+          `${API_BASE_URL}/api/autoevaluaciones/resumen/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
+        
         setNumAutoevaluaciones(response.data.autoevaluaciones.length);
       } catch (error) {
         console.error("Error al obtener autoevaluaciones:", error);
@@ -105,10 +107,11 @@ const NuevaAutoevaluacion = () => {
     try {
       const token = Cookies.get("token");
       const response = await axios.post(
-        "http://localhost:9092/api/autoevaluaciones/crear",
+        `${API_BASE_URL}/api/autoevaluaciones/crear`,
         { userId, procesos: selectedProcesos },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      
 
       const cuestionarioId = response.data.cuestionario._id;
       window.location.href = `/instrucciones/${cuestionarioId}`;

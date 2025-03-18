@@ -51,6 +51,7 @@ const PropuestasMejora = () => {
   const [loadingDescription, setLoadingDescription] = useState(false);
   const [userRole, setUserRole] = useState('ROLE_FREEMIUM'); // Rol predeterminado
   const [userId, setUserId] = useState(null); // Estado para almacenar userId
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
 
   useEffect(() => {
     const fetchPropuestas = async () => {
@@ -69,9 +70,10 @@ const PropuestasMejora = () => {
                 setUserId(id);
                 const role = decodedToken.role ;
                 setUserRole(role);
-        const response = await axios.get(
-          `http://localhost:9092/api/autoevaluaciones/${cuestionarioId}/propuestas`
-        );
+                const response = await axios.get(
+                  `${API_BASE_URL}/api/autoevaluaciones/${cuestionarioId}/propuestas`
+                );
+                
         setPropuestas(response.data);
         setFilteredPropuestas(response.data);
       } catch (error) {
@@ -100,8 +102,9 @@ const PropuestasMejora = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:9092/api/autoevaluaciones/${cuestionarioId}/tareas/${tarea.id}/descripcion`
+        `${API_BASE_URL}/api/autoevaluaciones/${cuestionarioId}/tareas/${tarea.id}/descripcion`
       );
+      
       const updatedTask = { ...tarea, descripcion: response.data.descripcion };
       setSelectedTask(updatedTask);
     } catch (error) {

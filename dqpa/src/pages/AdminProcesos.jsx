@@ -34,6 +34,8 @@ const AdminProcesos = () => {
   const [procesos, setProcesos] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalMode, setModalMode] = useState(""); // "add" | "edit"
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
+
   const [selectedProceso, setSelectedProceso] = useState({});
   const [formData, setFormData] = useState({
     nombre: "",
@@ -50,7 +52,7 @@ const AdminProcesos = () => {
 
   const fetchProcesos = async () => {
     try {
-      const response = await fetch("http://localhost:9092/api/admin/procesos");
+      const response = await fetch(`${API_BASE_URL}/api/admin/procesos`);
       const data = await response.json();
       setProcesos(data);
     } catch (error) {
@@ -78,9 +80,10 @@ const AdminProcesos = () => {
     try {
       const method = modalMode === "add" ? "POST" : "PUT";
       const url =
-        modalMode === "add"
-          ? "http://localhost:9092/api/admin/procesos/create"
-          : `http://localhost:9092/api/admin/procesos/update/${selectedProceso._id}`;
+  modalMode === "add"
+    ? `${API_BASE_URL}/api/admin/procesos/create`
+    : `${API_BASE_URL}/api/admin/procesos/update/${selectedProceso._id}`;
+
 
       await fetch(url, {
         method,
@@ -98,9 +101,10 @@ const AdminProcesos = () => {
   const handleDelete = async (id) => {
     if (window.confirm("¿Estás seguro de eliminar este proceso?")) {
       try {
-        await fetch(`http://localhost:9092/api/admin/procesos/delete/${id}`, {
+        await fetch(`${API_BASE_URL}/api/admin/procesos/delete/${id}`, {
           method: "DELETE",
         });
+
         fetchProcesos();
       } catch (error) {
         console.error("Error deleting proceso:", error);

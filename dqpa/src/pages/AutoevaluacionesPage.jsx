@@ -134,11 +134,13 @@ const Dashboard = () => {
         setUserRole(decodedToken.role);
 
         const userId = decodedToken.id;
+        const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
 
         const response = await axios.get(
-          `http://localhost:9092/api/autoevaluaciones/resumen/${userId}`,
+          `${API_BASE_URL}/api/autoevaluaciones/resumen/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
+        
 
         const evaluationsWithState = response.data.autoevaluaciones.map((evaluation) => ({
           ...evaluation,

@@ -75,6 +75,8 @@ const DashboardResultados = () => {
   const colors = ['#1e4b81', '#d37d36', '#d9d9d9']; // Colores para los sectores
   const { showTooltip, hideTooltip, tooltipData, tooltipTop, tooltipLeft } = useTooltip();
   const [nivelSeleccionado, setNivelSeleccionado] = useState(0);
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
+
 const [graficoRadarData, setGraficoRadarData] = useState({
   labels: [], 
   series: [{ data: [] }]
@@ -105,9 +107,10 @@ const chartRef = useRef(null);
     const fetchData = async () => {
       try {
         const resultadosRes = await axiosInstance.get(
-          `http://localhost:9092/api/autoevaluaciones/resultados/${cuestionarioId}`,
+          `${API_BASE_URL}/api/autoevaluaciones/resultados/${cuestionarioId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
+        
         const data = resultadosRes.data;
         setResultados(data);
         console.log(data)
@@ -132,10 +135,10 @@ const chartRef = useRef(null);
       const token = Cookies.get('token');
       // Se añade el cuestionarioId a la URL
       const response = await axios.get(
-        `http://localhost:9092/api/autoevaluaciones/procesos/${proceso.procesoId}/detalle/${cuestionarioId}`,
+        `${API_BASE_URL}/api/autoevaluaciones/procesos/${proceso.procesoId}/detalle/${cuestionarioId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-  
+      
       // Extraer datos para el gráfico radar: se espera recibir un objeto con { preguntas: [...] }
       const preguntas = response.data.preguntas || [];
       const labels = preguntas.map(p => p.descripcion);
@@ -182,13 +185,13 @@ const chartRef = useRef(null);
     const autoevaluacionId = cuestionarioId;
   
     const [cuestionarioResponse, resultadosResponse, propuestasResponse] = await Promise.all([
-      axios.get(`http://localhost:9092/api/autoevaluaciones/obtenerOptimizado/${autoevaluacionId}`, {
+      axios.get(`${API_BASE_URL}/api/autoevaluaciones/obtenerOptimizado/${autoevaluacionId}`, {
         headers: { Authorization: `Bearer ${token}` },
       }),
-      axios.get(`http://localhost:9092/api/autoevaluaciones/resultados/${autoevaluacionId}`, {
+      axios.get(`${API_BASE_URL}/api/autoevaluaciones/resultados/${autoevaluacionId}`, {
         headers: { Authorization: `Bearer ${token}` },
       }),
-      axios.get(`http://localhost:9092/api/autoevaluaciones/${autoevaluacionId}/propuestas-con-descripcion`, {
+      axios.get(`${API_BASE_URL}/api/autoevaluaciones/${autoevaluacionId}/propuestas-con-descripcion`, {
         headers: { Authorization: `Bearer ${token}` },
       }),
     ]);

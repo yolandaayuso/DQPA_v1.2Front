@@ -29,6 +29,7 @@ const fetchData = async (url) => {
     return [];
   }
 };
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -45,9 +46,11 @@ const AdminDashboard = () => {
       setLoading(true);
       try {
         const [usersData, questionsData, processesData] = await Promise.all([
-          fetchData("http://localhost:9092/api/admin/users"),
-          fetchData("http://localhost:9092/api/admin/preguntas"),
-          fetchData("http://localhost:9092/api/admin/procesos"),
+         
+fetchData(`${API_BASE_URL}/api/admin/users`),
+fetchData(`${API_BASE_URL}/api/admin/preguntas`),
+fetchData(`${API_BASE_URL}/api/admin/procesos`),
+
         ]);
         setUsers(usersData);
         setQuestions(questionsData);

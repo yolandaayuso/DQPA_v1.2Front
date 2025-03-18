@@ -25,6 +25,7 @@ import {
 import { Delete, Edit, Visibility, Add, Close, Clear } from "@mui/icons-material";
 import { Breadcrumbs, Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
 
 
 const modalStyle = {
@@ -67,8 +68,8 @@ const AdminPreguntas = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const resPreguntas = await fetch("http://localhost:9092/api/admin/preguntas");
-      const resProcesos = await fetch("http://localhost:9092/api/admin/procesos");
+      const resPreguntas = await fetch(`${API_BASE_URL}/api/admin/preguntas`);
+      const resProcesos = await fetch(`${API_BASE_URL}/api/admin/procesos`);      
       const preguntasData = await resPreguntas.json();
       const procesosData = await resProcesos.json();
 
@@ -149,8 +150,8 @@ const AdminPreguntas = () => {
       const method = modalMode === "add" ? "POST" : "PUT";
       const url =
         modalMode === "add"
-          ? "http://localhost:9092/api/admin/preguntas/create" // Nueva ruta para añadir
-          : `http://localhost:9092/api/admin/preguntas/update/${selectedPregunta._id}`; // Nueva ruta para actualizar
+          ? `${API_BASE_URL}/api/admin/preguntas/create`// Nueva ruta para añadir
+          : `${API_BASE_URL}/api/admin/preguntas/update/${selectedPregunta._id}`; // Nueva ruta para actualizar
   
       const payload = {
         descripcion: formData.descripcion,
@@ -181,7 +182,7 @@ const AdminPreguntas = () => {
     if (window.confirm("¿Estás seguro de eliminar esta pregunta?")) {
       try {
         const response = await fetch(
-          `http://localhost:9092/api/admin/preguntas/delete/${id}`,
+          `${API_BASE_URL}/api/admin/preguntas/delete/${id}`,
           { method: "DELETE" }
         );
   

@@ -25,6 +25,7 @@ const RegistroPage = () => {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const planType = queryParams.get('plan') || 'freemium';
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
 
   const [formData, setFormData] = useState({
     email: '',
@@ -96,7 +97,7 @@ const RegistroPage = () => {
     }
 
     try {
-      await axios.post('http://localhost:9092/api/auth/register', formData);
+      await axios.post(`${API_BASE_URL}/api/auth/register`, formData);
       setError('');
       setSuccess('Registro exitoso. Hemos enviado un correo de confirmación. Si no lo encuentra en su bandeja de entrada, revise la carpeta de Spam.');
       setTimeout(() => navigate('/login'), 5000);

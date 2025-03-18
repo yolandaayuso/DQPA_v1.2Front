@@ -8,11 +8,12 @@ const ConfirmPage = () => {
   const email = searchParams.get('email');
   const navigate = useNavigate();
   const [status, setStatus] = useState('loading'); // Estados: 'loading', 'success', 'alreadyConfirmed', 'error'
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
 
   useEffect(() => {
     const confirmAccount = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/api/auth/confirm?email=${email}`);
+        const response = await axios.get(`${API_BASE_URL}/api/auth/confirm?email=${email}`);
         
         // Verifica el código de estado en la respuesta
         if (response.status === 200) {

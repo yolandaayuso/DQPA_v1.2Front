@@ -55,6 +55,7 @@ const AdminUsers = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [roleFilter, setRoleFilter] = useState("");
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
 
   const [openModal, setOpenModal] = useState(false);
   const [modalMode, setModalMode] = useState(""); // "view" | "edit" | "add"
@@ -78,7 +79,7 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:9092/api/admin/users");
+      const response = await fetch(`${API_BASE_URL}/api/admin/users`);
       const data = await response.json();
       const sortedData = data.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -120,20 +121,19 @@ const AdminUsers = () => {
 
     try {
       if (modalMode === "add") {
-        await fetch("http://localhost:9092/api/admin/users/premiumpro", {
+        await fetch(`${API_BASE_URL}/api/admin/users/premiumpro`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
+        
       } else if (modalMode === "edit") {
-        await fetch(
-          `http://localhost:9092/api/admin/users/update/${formData._id}`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          }
-        );
+        await fetch(`${API_BASE_URL}/api/admin/users/update/${formData._id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        
       }
       fetchUsers();
       handleCloseModal();
@@ -148,9 +148,10 @@ const AdminUsers = () => {
   const handleDeleteUser = async (id) => {
     if (window.confirm("¿Estás seguro de eliminar este usuario?")) {
       try {
-        await fetch(`http://localhost:9092/api/admin/users/delete/${id}`, {
+        await fetch(`${API_BASE_URL}/api/admin/users/delete/${id}`, {
           method: "DELETE",
         });
+        
         fetchUsers();
       } catch (error) {
         console.error("Error al eliminar usuario:", error);
