@@ -54,11 +54,10 @@ const CuestionarioPage = () => {
       try {
         const token = Cookies.get('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        console.log("este es el cuestionario Id")
-        console.log(cuestionarioId)
+        
         const response = await axios.get(`${API_BASE_URL}/api/autoevaluaciones/obtenerOptimizado/${autoevaluacionId}`, config);
 
-        console.log(response.data);
+     
         const cuestionarioData = response.data.cuestionario;
   
         // Actualizar cuestionario y progreso
@@ -164,8 +163,11 @@ const CuestionarioPage = () => {
   
       // Llamar al backend para actualizar el cuestionario
       const payload = { preguntaId, respuesta: respuestaId }; // Cambiado a 'respuesta'
-      await axios.put(`${API_BASE_URL}/api/autoevaluaciones/actualizar/${cuestionario._id}`, payload, config);
-
+      const response = await axios.put(
+        `${API_BASE_URL}/api/autoevaluaciones/actualizar/${cuestionario._id}`,
+        payload,
+        config
+      );
   
       // Actualizar el progreso y las respuestas del cuestionario localmente
       setProgreso(response.data.cuestionario.progreso);
