@@ -30,7 +30,10 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:9092/api/auth/login", {
+      const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092";
+
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
+
         email,
         password,
       });
